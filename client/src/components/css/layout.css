@@ -1,0 +1,89 @@
+.cont {
+    background-color: #f7f8f9;
+}
+
+.navigation-container {
+    background-color: #10104d;
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    /* overflow: hidden; */
+    width: 100%;
+
+}
+
+.navigation-right {
+    /* background-color: red; */
+    height: inherit;
+    padding-right: 10%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    color: aliceblue;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+}
+
+.navigation-left {
+    /* background-color: blue; */
+    height: inherit;
+    padding-left: 10%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    color: aliceblue;
+    display: flex;
+
+}
+
+.secondaryybtn {
+    height: 40px;
+    background-color: #d6151f;
+    color: white
+}
+
+.primarybtn {}
+
+.primarybtn:hover {
+    height: 40px;
+    background-color: #10104d;
+    color: #d6151f
+}
+.logout:hover{
+    display: block;
+}
+.logout{
+    display: none;
+}
+.nav-container {
+    padding-right: 10%;
+    padding-left: 10%;
+    /* overflow: hidden; */
+    width: 100%;
+}
+
+.logo {
+    /* padding-right: 100px; */
+}
+
+.content-container {
+    padding-right: 10%;
+    padding-left: 10%;
+    /* overflow: hidden; */
+}
+
+.footer {
+    background-color: #10104d;
+    height: 200px;
+    padding:20px
+
+}
+.footer h3{
+    color:white;
+    text-transform:'capitalize'
+}
+
+.inputContainer {
+    padding: 10px;
+    margin-bottom: 5px;
+}

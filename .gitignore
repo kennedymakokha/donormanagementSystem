@@ -1,0 +1,5 @@
+/node_modules
+/daemon
+/uploads
+/public/uploads
+.env

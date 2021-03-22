@@ -1,0 +1,58 @@
+.landing-content {
+    height: 80vh;
+    background-color: #f7f8f9;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    /* flex-direction: column; */
+}
+
+.home-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+
+}
+
+.home-details h1,
+h2 {
+    text-align: center;
+    color: #10104d !important;
+    font-family: 'Cabin', sans-serif;
+}
+
+.donner_Image {
+    object-fit: cover;
+    height: 80vh;
+    width: 100%;
+}
+
+.buttons_Container {
+    justify-content: space-between;
+    display: flex;
+    width: 200px
+}
+
+.doners-body {
+    background-color: #f7f8f9;
+    padding-top: 30px;
+    
+
+}
+
+.doner_Item {
+    /* width: 23% !; */
+    height: 200px;
+    border: solid 1px #d6151f;
+    /* margin: 1px;  */
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    flex-direction: column;
+
+}
