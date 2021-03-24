@@ -49,12 +49,15 @@
     background-color: #10104d;
     color: #d6151f
 }
-.logout:hover{
+
+.logout:hover {
     display: block;
 }
-.logout{
+
+.logout {
     display: none;
 }
+
 .nav-container {
     padding-right: 10%;
     padding-left: 10%;
@@ -69,21 +72,23 @@
 .content-container {
     padding-right: 10%;
     padding-left: 10%;
+    padding-bottom: 200px;
     /* overflow: hidden; */
 }
 
 .footer {
     background-color: #10104d;
     height: 200px;
-    padding:20px;
+    padding: 20px;
     position: fixed;
     bottom: 0;
     width: 100%;
 
 }
-.footer h3{
-    color:white;
-    text-transform:'capitalize'
+
+.footer h3 {
+    color: white;
+    text-transform: 'capitalize'
 }
 
 .inputContainer {
