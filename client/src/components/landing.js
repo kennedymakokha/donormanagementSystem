@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Layout from './Layout';
 import './css/landing.css';
 import { Image, Button, Modal } from 'react-bootstrap'
-import Don from './imgs/bgImage.jpg'
+import Don from './imgs/bgImage.jpeg'
 import { connect } from 'react-redux'
 import Dashboard from './dashboard'
 import { fetch } from './../axios/actions/categories'
@@ -31,7 +31,7 @@ class landing extends Component {
     }
     render() {
         const { category, show, donations } = this.state
-        console.log(donations)
+       
         return (
             <Layout>
                 <div className="content-container">

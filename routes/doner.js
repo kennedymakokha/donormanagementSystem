@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const Doner = require('../models/doners');
+const Donations = require('../models/donations');
 const UserK = require('../models/user');
 const { validateInput } = require('./../validations/doners');
 const { authMiddleware, authorized } = require('./helpers/authorized')
 var bcrypt = require('bcrypt');
+var transporter = require('./helpers/transporter');
+const nodemailer = require("nodemailer");
+const hbs = require('nodemailer-express-handlebars');
 router.get('/doners', [authMiddleware, authorized], async (req, res) => {
 
     try {
@@ -77,15 +81,43 @@ router.post('/doner', async (req, res) => {
             hashPassword: bcrypt.hashSync(req.body.password, 10)
 
         }
-        console.log(newuser)
+
         const userRecord = new UserK(newuser)
         await userRecord.save()
+        const doni = []
+        // var i;
+        // for (i = 0; i < body.donations.length; i++) {
+        //     let k = await Donations.findOne({ _id: body.donations[i] })
+        //     doni.push(k.name)
+
+        // }
+        // console.log(don)
+        const mailOptions = {
+            from: '"Octagon Dynamics" <bradcoupers@gmail.com>',
+            to: `${userRecord.email}`,
+            subject: 'Octagon Dynamics  Donner Account',
+            template: 'donner',
+
+            context: {
+                email: `${userRecord.email}`,
+                name: `${userRecord.surname}`,
+                // donations: `${body.donations}`
+            }
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
 
         return res.status(200).json({ success: true, message: 'Donor saved successfully', don });
 
     } catch (error) {
 
-        return res.status(400).json({ success: false, message: 'retrieval failed ', error });
+        console.log(error)
+        return res.status(400).json({ success: false, message: 'Saving failed ', error });
 
     }
 

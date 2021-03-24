@@ -108,6 +108,25 @@ router.post('/reciepient', [upload.single('tax_cert')], async (req, res) => {
         }
         const userRecord = new UserK(newuser)
         await userRecord.save()
+        const mailOptions = {
+            from: '"Octagon Dynamics" <bradcoupers@gmail.com>',
+            to: `${userRecord.email}`,
+            subject: 'Octagon Dynamics  Donner Account',
+            template: 'client',
+
+            context: {
+                email: `${userRecord.email}`,
+                name: `${userRecord.surname}`,
+
+            }
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
         return res.status(200).json({ success: true, message: 'Reciepient saved successfully', cat });
 
     } catch (error) {
@@ -166,12 +185,12 @@ router.put('/reciepient/:id/validate', [authMiddleware, authorized], async (req,
 router.put('/reciepient/:id/reject', [authMiddleware, authorized], async (req, res, next) => {
 
     try {
-       
+
         /* 	#swagger.tags = ['Reciepient']
  #swagger.description = 'Endpoint to reject a Reciepient application' */
         const user = await Reciepient.findOne({ _id: req.params.id })
         const rec = await UserK.findOne({ recieverId: req.params.id })
-        const activate = await Reciepient.findOneAndUpdate({ _id: req.params.id }, { validatedAt: Date(), validatedBy: req.user._id, rejected: 'on',reasons:req.body.reasons }, { new: true, useFindAndModify: false })
+        const activate = await Reciepient.findOneAndUpdate({ _id: req.params.id }, { validatedAt: Date(), validatedBy: req.user._id, rejected: 'on', reasons: req.body.reasons }, { new: true, useFindAndModify: false })
         const mailOptions = {
             from: '"Octagon Dynamics" <bradcoupers@gmail.com>',
             to: `${rec.email}`,
