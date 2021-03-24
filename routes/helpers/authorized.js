@@ -17,6 +17,8 @@ const authorized = (req, res, next) => {
 const authMiddleware = (req, res, next) => {
 
     const authorization = req.headers['authorization'];
+    
+    console.log(authorization)
 
     const token = authorization && authorization.split(' ')[1];
 

@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Doner = require('../models/Doners');
+const Doner = require('../models/doners');
 const UserK = require('../models/user');
-const { validateInput } = require('./../validations/Doners');
+const { validateInput } = require('./../validations/doners');
 const { authMiddleware, authorized } = require('./helpers/authorized')
 var bcrypt = require('bcrypt');
 router.get('/doners', [authMiddleware, authorized], async (req, res) => {
