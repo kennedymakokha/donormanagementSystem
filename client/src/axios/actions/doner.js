@@ -4,8 +4,6 @@ export const post = (data) => async dispatch => {
         const response = await axios.post(`/doner`, data);
         return response;
     } catch (error) {
-
-        // alert(error)
         throw error;
     }
 
@@ -16,13 +14,10 @@ export const fetch = () => async dispatch => {
         setAuthToken(axios);
         const response = await axios.get(`/doners`);
         let payload = response.data.Doners
-        // alert(JSON.stringify(payload))
         await dispatch({ type: 'FETCH_DONERS', payload })
         return payload;
 
     } catch (error) {
-
-        // alert(error)
         throw error;
     }
 
@@ -37,8 +32,6 @@ export const fetchOne = (id) => async dispatch => {
         return payload;
 
     } catch (error) {
-
-        // alert(error)
         throw error;
     }
 

@@ -50,7 +50,6 @@ export const authorised = (id) => async dispatch => {
         setAuthToken(axios);
         const response = await axios.get(`/user/${id}`)
         let payload = response.data.usr
-        console.log(payload)
         await dispatch({ type: 'SET_CURRENT_USER', payload })
         return
 
@@ -64,7 +63,7 @@ export const authorised = (id) => async dispatch => {
 export const post = (data) => async dispatch => {
 
     try {
-        console.log(data.avatar);
+       
         let formData = new FormData();
         formData.append('avatar', data.avatar);
         formData.append('email', data.email);
@@ -73,10 +72,6 @@ export const post = (data) => async dispatch => {
         formData.append('ID_no', data.ID_no);
         formData.append('residence', data.residence);
         formData.append('password', data.password);
-
-        // console.log(JSON.stringify(formData))
-
-        console.log(JSON.stringify(data))
         const response = await axios.post(`/auth/register`, formData);
         return response.data;
 
@@ -92,7 +87,6 @@ export const fetch = () => async dispatch => {
         setAuthToken(axios);
         const response = await axios.get(`/employees`);
         const payload = response.data
-        console.log(payload)
         await dispatch({ type: 'FETCH_EMPLOYEES', payload })
         return payload;
     } catch (error) {

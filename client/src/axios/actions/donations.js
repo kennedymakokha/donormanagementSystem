@@ -22,8 +22,6 @@ export const fetchdonations = () => async dispatch => {
         return payload;
 
     } catch (error) {
-
-        alert(error)
         throw error;
     }
 
@@ -34,8 +32,6 @@ export const deleteDonation = (id) => async dispatch => {
         const response = await axios.put(`/donation/${id}/deactivate`);
         return response;
     } catch (error) {
-
-        // alert(error)
         throw error;
     }
 
@@ -46,8 +42,6 @@ export const EditDonation = (data) => async dispatch => {
         const response = await axios.put(`/donation/${data.id}/edit`, data);
         return response;
     } catch (error) {
-
-        // alert(error)
         throw error;
     }
 

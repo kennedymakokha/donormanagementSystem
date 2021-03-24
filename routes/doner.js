@@ -52,6 +52,14 @@ router.post('/doner', async (req, res) => {
         if (UsedEmail) {
             return res.status(400).json({ success: false, message: `${req.body.email} already exists` });
         }
+        const Usedtel = await Doner.findOne({ mobile: req.body.mobile })
+        if (Usedtel) {
+            return res.status(400).json({ success: false, message: `${req.body.mobile} already used kindly use another No` });
+        }
+        
+        if (req.body.password !== req.body.password_confirm) {
+            return res.status(400).json({ success: false, message: `Password doesnt match the confirm password` });
+        }
 
         const reqdonations = [];
         if (req.body.donations !== undefined) {
@@ -77,6 +85,7 @@ router.post('/doner', async (req, res) => {
             surname: req.body.name,
             phone: req.body.mobile,
             role: "donner",
+            active: "on",
             donnerId: don._id,
             hashPassword: bcrypt.hashSync(req.body.password, 10)
 
@@ -85,13 +94,7 @@ router.post('/doner', async (req, res) => {
         const userRecord = new UserK(newuser)
         await userRecord.save()
         const doni = []
-        // var i;
-        // for (i = 0; i < body.donations.length; i++) {
-        //     let k = await Donations.findOne({ _id: body.donations[i] })
-        //     doni.push(k.name)
-
-        // }
-        // console.log(don)
+        
         const mailOptions = {
             from: '"Octagon Dynamics" <bradcoupers@gmail.com>',
             to: `${userRecord.email}`,
@@ -115,8 +118,6 @@ router.post('/doner', async (req, res) => {
         return res.status(200).json({ success: true, message: 'Donor saved successfully', don });
 
     } catch (error) {
-
-        console.log(error)
         return res.status(400).json({ success: false, message: 'Saving failed ', error });
 
     }
@@ -167,7 +168,7 @@ router.put('/doner/:id/edit', [authMiddleware, authorized], async (req, res, nex
         body.updatedBy = req.user._id
         // body.updatedBy = req.user._id
         body.updatedAt = Date.now()
-        console.log(body)
+      
         const cat = await Doner.findOneAndUpdate({ _id: req.params.id }, body, { new: true, useFindAndModify: false })
         return res.status(200).json({ success: true, message: 'Donor edited successfull', cat });
     } catch (error) {

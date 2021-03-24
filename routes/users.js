@@ -48,7 +48,7 @@ router.post('/register', [upload.single('avatar')], async (req, res) => {
     }] */
 
     const url = req.protocol + '://' + req.get('host');
-    
+
     if (!req.file) {
 
         return res.status(400).json({ success: false, message: "Avatar Is Required !" });
@@ -61,13 +61,15 @@ router.post('/register', [upload.single('avatar')], async (req, res) => {
     if (!isValid) {
         return res.status(400).json(errors);
     }
-  
+
     if (useremail) {
         return res.status(400).json({ message: 'Email already Taken try another email' })
     }
 
     let body = req.body
     body.avatar = url + '/uploads/avatars/' + req.file.filename
+    body.active = 'on'
+    
     const newUser = new User(body)
 
     newUser.hashPassword = bcrypt.hashSync(req.body.password, 10);
@@ -107,6 +109,10 @@ router.post('/login', async (req, res) => {
 
 
         const user = await User.findOne({ email: req.body.email });
+
+        if (user.active === "off") {
+            return res.status(401).json({ message: 'Your account is inactive kindly  conduct the admin to activate !!' });
+        }
 
         if (!user) {
             return res.status(401).json({ message: 'Authentication failed.User Not found !!' });

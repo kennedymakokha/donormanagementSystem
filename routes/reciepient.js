@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Reciepient = require('../models/reciepient');
 const { validateInput } = require('./../validations/reciepient');
+const { validate } = require('./../validations/vlidateclient');
 var multer = require('multer');
 var { v4 } = require('uuid');
 const { authMiddleware, authorized } = require('./helpers/authorized')
@@ -28,6 +29,7 @@ var upload = multer({
             cb(null, true);
         } else {
             cb(null, false);
+
             return cb(new Error('Pdf format allowed!'));
         }
     }
@@ -68,7 +70,7 @@ router.post('/reciepient', [upload.single('tax_cert')], async (req, res) => {
                 "apiKeyAuth": []
         }] */
         const url = req.protocol + '://' + req.get('host');
-        console.log(req.file)
+       
         if (!req.file) {
 
             return res.status(400).json({ success: false, message: " Kindly upload a tax-compliance certificatte !" });
@@ -82,18 +84,21 @@ router.post('/reciepient', [upload.single('tax_cert')], async (req, res) => {
         }
 
         const UsedREg = await Reciepient.findOne({ registrationNo: req.body.registrationNo })
-        const Usedemail = await Reciepient.findOne({ email: req.body.email })
+        const Usedemail = await UserK.findOne({ email: req.body.email })
+        const Usedtel = await Reciepient.findOne({ phone: req.body.tel })
         if (UsedREg) {
             return res.status(400).json({ success: false, message: `Reciepient  with Registration ${req.body.registrationNo} already exists` });
         }
         if (Usedemail) {
             return res.status(400).json({ success: false, message: `${req.body.email} already exists` });
         }
+        if (Usedtel) {
+            return res.status(400).json({ success: false, message: `Phone Number ${req.body.tel} already exists` });
+        }
 
         let body = req.body
 
         body.tax_cert = url + '/uploads/cert/' + req.file.filename
-        // body.createdBy = {req.user._id ?:'self'}
         const cat = new Reciepient(body);
         await cat.save()
         const newuser = {
@@ -152,10 +157,14 @@ router.get('/reciepient/:id', [authMiddleware, authorized], async (req, res, nex
 router.put('/reciepient/:id/validate', [authMiddleware, authorized], async (req, res, next) => {
 
     try {
+
         /* 	#swagger.tags = ['Reciepient']
  #swagger.description = 'Endpoint to delete a Reciepient' */
         const user = await Reciepient.findOne({ _id: req.params.id })
         const rec = await UserK.findOne({ recieverId: req.params.id })
+        // const activatef = await UserK.findOneAndUpdate({ email: user.email })
+        const activatef = await UserK.findOneAndUpdate({ recieverId: req.params.id }, { active: 'on' }, { new: true, useFindAndModify: false })
+
         const activate = await Reciepient.findOneAndUpdate({ _id: req.params.id }, { validatedAt: Date(), validatedBy: req.user._id, valid: 'on' }, { new: true, useFindAndModify: false })
         const mailOptions = {
             from: '"Octagon Dynamics" <bradcoupers@gmail.com>',
@@ -185,6 +194,13 @@ router.put('/reciepient/:id/validate', [authMiddleware, authorized], async (req,
 router.put('/reciepient/:id/reject', [authMiddleware, authorized], async (req, res, next) => {
 
     try {
+
+        const { errors, isValid } = validate(req.body);
+        if (!isValid) {
+            const errObj = errors;
+            return res.status(400).json({ success: false, message: `${Object.values(errObj)[0]}` });
+
+        }
 
         /* 	#swagger.tags = ['Reciepient']
  #swagger.description = 'Endpoint to reject a Reciepient application' */

@@ -4,6 +4,8 @@ import { Table, Button, Modal, Form, Col } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { post as postrecipient, reject, fetch, validate, fetchOne } from './../axios/actions/recipient'
+import Toast from './toast'
+import toastify from './toastify'
 
 class recipients extends Component {
     constructor(props) {
@@ -11,11 +13,14 @@ class recipients extends Component {
         this.state = {
             data: [],
             show: false,
+            notify: false,
             reciepient: {},
             valid: '',
             category: {},
             showReject: false,
-            reasons: ''
+            reasons: '',
+            message: '',
+            variant: ''
 
         }
     }
@@ -23,7 +28,6 @@ class recipients extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
-        console.log(e.target.value)
     }
     validate = async (e) => {
         await this.props.fetchOne(`${e._id}`)
@@ -66,8 +70,14 @@ class recipients extends Component {
             await this.props.fetch()
             this.setState({ data: this.props.reciepients, showReject: false })
         } catch (error) {
-
+            const j = toastify(`${error.response.data.message}`, 'danger')
+            this.setState({
+                notify: 'notification-show', message: j.message, variant: j.variant
+            })
         }
+    }
+    hideToast = () => {
+        this.setState({ notify: 'notification-hide' })
     }
     componentDidMount = async () => {
 
@@ -83,6 +93,7 @@ class recipients extends Component {
         const { show, reciepient, showReject } = this.state
         return (
             <Layout >
+                <Toast position="bottom-left" message={this.state.message} hideToast={() => this.hideToast()} show={this.state.notify} variant={this.state.variant} />
                 <div className="content-container">
                     <Table striped bordered hover size="sm">
                         <thead>
@@ -106,8 +117,8 @@ class recipients extends Component {
                                     <td>{dat.tel}</td>
                                     <td>{dat.funds}</td>
                                     <td>{dat.category.name}</td>
-                                    <td style={{ justifyContent: 'space-between', display: 'flex' }}> {dat.valid === "off" ? dat.rejected === "off"?<Button className='bt-xs' onClick={() => this.validate(dat)}>Validate</Button>:null : <Button className='bt-xs' onClick={() => this.validate(dat)}>Validated</Button>}
-                                        {dat.rejected === "off" ? dat.valid === "off"? <Button className='bt-xs' style={{ backgroundColor: '#e57373' }} onClick={() => this.reject(dat)}>Reject</Button>:null : <Button className='bt-xs' style={{ backgroundColor: 'red' }} onClick={() => this.reject(dat)}>Rejected</Button>}
+                                    <td style={{ justifyContent: 'space-between', display: 'flex' }}> {dat.valid === "off" ? dat.rejected === "off" ? <Button className='bt-xs' onClick={() => this.validate(dat)}>Validate</Button> : null : <Button className='bt-xs' onClick={() => this.validate(dat)}>Validated</Button>}
+                                        {dat.rejected === "off" ? dat.valid === "off" ? <Button className='bt-xs' style={{ backgroundColor: '#e57373' }} onClick={() => this.reject(dat)}>Reject</Button> : null : <Button className='bt-xs' style={{ backgroundColor: 'red' }} onClick={() => this.reject(dat)}>Rejected</Button>}
                                     </td>
                                 </tr>
                             ))}
@@ -229,7 +240,7 @@ class recipients extends Component {
                         <Form.Row>
                             <Col>
                                 <Form.Label>Reasons for rejecting</Form.Label>
-                                <Form.Control as="textarea" value={this.state.reasons} rows={5} onChange={(e) => this.handleinputChange(e)} name="reasons" placeholder="Enter yor reasons for rejecting  this application" />
+                                <Form.Control as="textarea" required value={this.state.reasons} rows={5} onChange={(e) => this.handleinputChange(e)} name="reasons" placeholder="Enter yor reasons for rejecting  this application" />
                             </Col>
                         </Form.Row>
                     </Modal.Body>

@@ -90,18 +90,9 @@ class doners extends Component {
     componentDidMount = async () => {
         const uid = localStorage.getItem('user_id');
         await this.props.authorised(uid)
-        // alert(JSON.stringify(this.props.user.donnerId))
-        // if (localStorage.getItem('role') !== 'admin') {
-        //     const j = toastify(`Yo are not llowed `, 'danger')
-        //     this.setState({
-        //         show: 'notification-show', message: j.message, variant: j.variant
-        //     })
-        //     return this.props.history.push('/');
-        // }
         if (localStorage.getItem('role') === 'reciever') {
             if (this.props.user.recieverId !== undefined) {
                 const k = await this.props.fetchOne(this.props.user.recieverId)
-                console.log(JSON.stringify(k.category.name))
                 const j = await this.props.fetchdonationpercategory(k.category._id)
                 this.setState({ data: this.props.donations, loading: this.props.categoryLoading })
             }

@@ -27,7 +27,6 @@ class landing extends Component {
     componentDidMount = async () => {
         await this.props.fetch()
         this.setState({ data: this.props.categories })
-        // console.log(result.data)
     }
     render() {
         const { category, show, donations } = this.state

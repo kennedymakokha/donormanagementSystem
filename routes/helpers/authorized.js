@@ -17,12 +17,10 @@ const authorized = (req, res, next) => {
 const authMiddleware = (req, res, next) => {
 
     const authorization = req.headers['authorization'];
-    
-    console.log(authorization)
 
     const token = authorization && authorization.split(' ')[1];
 
-    if(token == null) {
+    if (token == null) {
 
         return res.status(401).json({ success: false, message: 'Not Authorised !' });
 
@@ -30,7 +28,7 @@ const authMiddleware = (req, res, next) => {
 
     jsonwebtoken.verify(token, 'Bradley', async (err, data) => {
 
-        if(err) return res.status(403).json({ success: false, message: 'Not Authorised !' });
+        if (err) return res.status(403).json({ success: false, message: 'Not Authorised !' });
 
         req.user = data;
 

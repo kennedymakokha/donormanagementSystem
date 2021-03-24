@@ -75,7 +75,10 @@
 .footer {
     background-color: #10104d;
     height: 200px;
-    padding:20px
+    padding:20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 
 }
 .footer h3{

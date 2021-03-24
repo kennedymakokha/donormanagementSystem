@@ -106,7 +106,6 @@ router.put('/category/:id/edit', [authMiddleware, authorized], async (req, res, 
         body.updatedBy = req.user._id
         // body.updatedBy = req.user._id
         body.updatedAt = Date.now()
-        console.log(body)
         const cat = await Category.findOneAndUpdate({ _id: req.params.id }, body, { new: true, useFindAndModify: false })
         return res.status(200).json({ success: true, message: 'Category edited successfull', cat });
     } catch (error) {

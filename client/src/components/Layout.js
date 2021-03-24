@@ -30,8 +30,9 @@ class Layout extends Component {
         this.state = {
             show: false,
             showdoner: false,
-            email: 'log@example.com',
-            password: 'kennedymakokha',
+            email: '',
+            password: '',
+            password_confirm: '',
             user: {},
             role: '',
             data: [],
@@ -138,8 +139,10 @@ class Layout extends Component {
     RegisterDoner = async () => {
 
         try {
-            const { name, email, mobile, donations, registrationNo, dob, area, contact, contact_phone, password } = this.state
-            const data = { name, email, donations, registrationNo, mobile, dob, area, contact, contact_phone, password }
+
+            const { name, email, mobile, donations, registrationNo, password_confirm, dob, area, contact, contact_phone, password } = this.state
+            
+            const data = { name, email, donations, registrationNo,password_confirm, mobile, dob, area, contact, contact_phone, password }
             const results = await this.props.postdoner(data)
             const j = toastify(`${results.data.message}`, 'success')
             this.setState({ showdoner: false, show: 'notification-show', message: j.message, variant: j.variant })
@@ -181,7 +184,6 @@ class Layout extends Component {
                 this.setState({ user: this.props.user, role: this.props.user.role })
             }
         }
-        // alert( this.props.user.role)
         await this.props.fetch();
         await this.props.fetchdonations();
         this.setState({ data: this.props.categories, donation: this.props.donations })
@@ -238,11 +240,11 @@ class Layout extends Component {
                             <Nav.Link to="/" href="/">{!localStorage.getItem('token') ? 'Home' : 'Dashboard'}</Nav.Link>
                             {!localStorage.getItem('token') ? <Nav.Link to="/about-us" href="/about-us">About</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/donations-categories" href="/donations-categories">Donation Categories</Nav.Link> : null}
-                            {this.props.user.role === "admin" ? <Nav.Link to="/donations" href="/donations">Donations</Nav.Link> : null}
+                            {this.props.user.role === "admin" ? <Nav.Link to="/donations-view" href="/donations-view">Donations</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/recipients" href="/recipients">Recipients</Nav.Link> : null}
-                            {this.props.user.role === "admin" ? <Nav.Link to="/doners" href="/doners">Donors</Nav.Link> : null}
-                            {this.props.user.role === "reciever" ? <Nav.Link to="/donations" href="/doners">Available donations</Nav.Link> : null}
-                            {this.props.user.role === "donner" ? <Nav.Link to="/donations" href="/doners">My donations</Nav.Link> : null}
+                            {this.props.user.role === "admin" ? <Nav.Link to="/doners-view" href="/doners-view">Donors</Nav.Link> : null}
+                            {this.props.user.role === "reciever" ? <Nav.Link to="/donations-view" href="/donations-view">Available donations</Nav.Link> : null}
+                            {this.props.user.role === "donner" ? <Nav.Link to="/donations-view" href="/donations-view">My donations</Nav.Link> : null}
                             {!localStorage.getItem('token') ? <Nav.Link to="/blogs" href="/blogs">Blog</Nav.Link> : null}
                             {!localStorage.getItem('token') ? <Nav.Link to="/contact-us" href="/contact-us">Contact</Nav.Link> : null}
                         </Nav>
@@ -387,7 +389,7 @@ class Layout extends Component {
                             <Col>
                                 <div className="inputContainer">
                                     <Form.Label>Password Confirm</Form.Label><br />
-                                    <Form.Control type="password" onChange={(e) => this.handleinputChange(e)} name="password-confirm" placeholder="Enter password confirm" />
+                                    <Form.Control type="password" onChange={(e) => this.handleinputChange(e)} name="password_confirm" placeholder="Enter password confirm" />
                                 </div>
                             </Col>
                         </Form.Row>
@@ -440,7 +442,7 @@ class Layout extends Component {
                                 </Col>
                                 <Col>
                                     <div className="inputContainer">
-                                        <Form.Label>{type === 'individual' ? "Identification Number" : "Organisation Regidtration Number"}</Form.Label>
+                                        <Form.Label>{type === 'individual' ? "Identification Number" : "Organisation Registration Number"}</Form.Label>
                                         <Form.Control type="text" onChange={(e) => this.handleinputChange(e)} name="registrationNo" placeholder={comp ? `Enter Company PIN No` : `Enter ID No`} />
                                     </div>
                                 </Col>

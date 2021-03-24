@@ -30,7 +30,11 @@ var UserSchema = new Schema({
 
     role: {
         type: String,
-        default: 'reciever'
+        default: 'admin'
+    },
+    active: {
+        type: String,
+        default: 'off'
     },
     donnerId: {
         type: Schema.Types.ObjectId,
