@@ -50,7 +50,7 @@ class applicants extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.data.map((dat, i) => (
+                            {/* {this.state.data.map((dat, i) => (
                                 <tr key={i}>
                                     <td>{dat.applicants_id.surname}</td>
                                     <td>{dat.category_id.name}</td>
@@ -58,7 +58,7 @@ class applicants extends Component {
                                     <td><Badge variant={`${dat.status}`}>{dat.status === "warning" ? "Panding" : dat.status === "secondary" ? "processing" : dat.status === "success" ? "approved" : dat.status === "danger" ? "disapproved" : null}</Badge></td>
                                     <td>{dat.status === "warning" ? <Button variant={dat.approved === "off" ? "primary" : "secondary"} className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.approveit(dat)}>{dat.approved === "off" ? "Approve" : "Pending"}</Button> : null}</td>
                                 </tr>
-                            ))}
+                            ))} */}
 
                         </tbody>
                     </Table>
