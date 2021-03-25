@@ -19,7 +19,7 @@ var ApplicantsSchema = new Schema({
     },
     status: {
         type: String,
-        default: 'Warning'
+        default: 'warning'
     },
     approvedBy: {
         type: Schema.Types.ObjectId,

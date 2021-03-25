@@ -12,8 +12,10 @@ import NoImage from './imgs/noimage.jpg'
 import { connect } from 'react-redux'
 import { loginUser, authorised, logout } from './../axios/actions/users'
 import { fetch } from './../axios/actions/categories'
-import { fetchdonations } from './../axios/actions/donations'
+import { fetchdonations, fetchdonationpercategory } from './../axios/actions/donations'
 import { post as postdoner } from './../axios/actions/doner'
+import { post as applicantpost } from './../axios/actions/applications'
+
 import { post as postrecipient } from './../axios/actions/recipient'
 import { withRouter } from 'react-router-dom';
 import Toast from './toast'
@@ -61,7 +63,11 @@ class Layout extends Component {
             toast: true,
             message: '',
             variant: '',
-            showlogin: false
+            showlogin: false,
+            showapply: false,
+            category_id: '',
+            donation_id: ''
+
 
 
         }
@@ -73,6 +79,26 @@ class Layout extends Component {
 
         })
     }
+
+    fetchdonationsforcat = async (e) => {
+        await this.props.fetchdonationpercategory(e.target.value)
+        console.log(this.props.donations)
+        this.setState({ category_id: e.target.value })
+
+    }
+
+    submitApplication = async () => {
+        const data = {
+            donation_id: this.state.donation_id,
+            category_id: this.state.category_id,
+            applicants_id: localStorage.getItem('user_id')
+        }
+        await this.props.applicantpost(data)
+        this.setState({ showapply: false })
+        const j = toastify('application submitted', 'success')
+        this.setState({ show: 'notification-show', message: j.message, variant: j.variant })
+    }
+
     showToast = () => {
         const j = toastify('pass', 'danger')
         this.setState({ show: 'notification-show', message: j.message, variant: j.variant })
@@ -190,7 +216,7 @@ class Layout extends Component {
 
     }
     render() {
-        const { showlogin, showdoner, comp, showrecepient, donation, type, data } = this.state
+        const { showlogin, showapply, showdoner, comp, showrecepient, donation, type, data } = this.state
 
         const options = []
         donation.map(i => (
@@ -251,6 +277,10 @@ class Layout extends Component {
                             {!localStorage.getItem('token') ? <Nav.Link to="/blogs" href="/blogs">Blog</Nav.Link> : null}
                             {!localStorage.getItem('token') ? <Nav.Link to="/contact-us" href="/contact-us">Contact</Nav.Link> : null}
                         </Nav>
+
+                        {this.props.user.role === "reciever" ? <Nav.Link eventKey={2}>
+                            <Button className='primarybtn' onClick={() => this.setState({ showapply: true })}> Apply</Button>
+                        </Nav.Link> : null}
                         {!this.props.auth ? <Nav>
                             {/* <Nav.Link href="#deets">More deets</Nav.Link> */}
                             <Nav.Link eventKey={2}>
@@ -300,6 +330,46 @@ class Layout extends Component {
           </Button>
                     </Modal.Footer>
                 </Modal>
+                <Modal show={showapply} onHide={() => this.setState({ showapply: false })}>
+                    <Modal.Header closeButton>
+                        <Modal.Title style={{ textAlign: 'center' }}>APPLY NOW</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="inputContainer">
+                            <Form.Group as={Col} controlId="formGridState">
+                                <Form.Label>Category</Form.Label>
+                                <Form.Control as="select" name="category_id" onChange={(e) => this.fetchdonationsforcat(e)} defaultValue="Choose...">
+                                    <option>Choose...</option>
+                                    {this.props.categories.map((cat, i) => (
+                                        <option value={cat._id} key={i}>{cat.name}</option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
+                        </div>
+                        <div className="inputContainer">
+                            <Form.Group as={Col} controlId="formGridState">
+                                <Form.Label>Donation</Form.Label>
+                                <Form.Control as="select" name="donation_id" onChange={(e) => this.handleinputChange(e)}>
+                                    <option>Choose...</option>
+                                    {this.props.donations.map((cat, i) => (
+                                        <option value={cat._id} key={i}>{cat.name}</option>
+                                    ))}
+                                </Form.Control>
+                            </Form.Group>
+                        </div>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => this.setState({ showapply: false })}>
+                            Close
+          </Button>
+                        <Button variant="primary" onClick={() => this.submitApplication()}>
+                            Submit
+          </Button>
+                    </Modal.Footer>
+                </Modal>
+
+
                 <Modal
                     size="xl"
                     aria-labelledby="contained-modal-title-vcenter"
@@ -554,4 +624,4 @@ const mapStateToProps = (state) => {
 
 };
 
-export default connect(mapStateToProps, { loginUser, authorised, fetch, fetchdonations, postdoner, postrecipient, logout })(withRouter(Layout));
+export default connect(mapStateToProps, { loginUser, applicantpost, authorised, fetch, fetchdonations, postdoner, postrecipient, fetchdonationpercategory, logout })(withRouter(Layout));
