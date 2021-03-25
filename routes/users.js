@@ -111,7 +111,7 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
 
         if (user.active === "off") {
-            return res.status(401).json({ message: 'Your account is inactive kindly  conduct the admin to activate !!' });
+            return res.status(401).json({ message: 'Your account is inactive kindly  contact the admin to activate !!' });
         }
 
         if (!user) {

@@ -30,11 +30,11 @@ class applicants extends Component {
         this.setState({ data: k.data.Applications })
 
 
-        
+
     }
 
     render() {
-        console.log( this.state.data)
+        console.log(this.state.data)
         return (
             <Layout>
                 <div className="content-container">
@@ -50,7 +50,7 @@ class applicants extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.data === undefined ? null : this.state.data.map((dat, i) => (
+                            {this.state.data.map((dat, i) => (
                                 <tr key={i}>
                                     <td>{dat.applicants_id.surname}</td>
                                     <td>{dat.category_id.name}</td>
