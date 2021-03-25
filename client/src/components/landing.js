@@ -37,8 +37,8 @@ class landing extends Component {
                     <div className='row landing-content'>
                         <div className='col-md-6 col-xs-12' >
                             <div className='home-details'>
-                                <h1>Donate To Save Life</h1>
-                                <p style={{ textAlign: 'center' }}> Doner Content Management System (CMS). Agents can register and manage donors easily</p>
+                                <h1>Digi-Donor</h1>
+                                <p style={{ textAlign: 'center' }}>connects nonprofits, donors, and companies in nearly every country in the Africa. We help fellow nonprofits access the funding, tools, training, and support they need to serve their communities</p>
                                 <div className='buttons_Container'>
                                     <Button className='primarybtn'>Join Now</Button>
                                     <Button className='primarybtn'>Contact Us</Button>
