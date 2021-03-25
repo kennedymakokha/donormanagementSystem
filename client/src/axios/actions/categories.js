@@ -10,6 +10,7 @@ export const post = (data) => async dispatch => {
 };
 export const fetchOne = (data) => async dispatch => {
     try {
+        setAuthToken(axios);
         const response = await axios.get(`/category/${data}`);
         let payload = response.data.cat
         await dispatch({ type: 'FETCH_CATEGORY', payload })
@@ -23,6 +24,7 @@ export const fetchOne = (data) => async dispatch => {
 
 export const deleteType = (id) => async dispatch => {
     try {
+        setAuthToken(axios);
         const response = await axios.put(`/category/${id}/deactivate`);
         return response;
     } catch (error) {
@@ -33,6 +35,7 @@ export const deleteType = (id) => async dispatch => {
 export const EditType = (data) => async dispatch => {
 
     try {
+        setAuthToken(axios);
         const response = await axios.put(`/category/${data.id}/edit`, data);
         return response;
     } catch (error) {
