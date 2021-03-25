@@ -268,7 +268,7 @@ class Layout extends Component {
                             {this.props.user.role === "admin" ? <Nav.Link to="/donations-categories" href="/donations-categories">Donation Categories</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/donations-view" href="/donations-view">Donations</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/recipients" href="/recipients">Recipients</Nav.Link> : null}
-                            {this.props.user.role === "admin" ? <Nav.Link to="/applicants" href="/applicants">Applicants</Nav.Link> : null}
+                            {this.props.user.role === "admin" ? <Nav.Link to="/applicants-view" href="/applicants-view">Applicants</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/doners-view" href="/doners-view">Donors</Nav.Link> : null}
                             {this.props.user.role === "reciever" ? <Nav.Link to="/donations-view" href="/donations-view">Available donations</Nav.Link> : null}
                             {this.props.user.role === "donner" ? <Nav.Link to="/donations-view" href="/donations-view">My donations</Nav.Link> : null}

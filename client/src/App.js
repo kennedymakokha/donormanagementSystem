@@ -25,7 +25,7 @@ export default class App extends Component {
               <Route path="/donations-view" exact component={Donations} />
               <Route path="/donations-categories" exact component={Category} />
               <Route path="/about-us" exact component={About} />
-              <Route path="/applicants" exact component={Applicants} />
+              <Route path="/applicants-view" exact component={Applicants} />
               <Route path="/donor-applicants" exact component={DonApplicants} />
               <Route exact component={Error} />
             </Switch>
