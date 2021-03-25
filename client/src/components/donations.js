@@ -147,8 +147,8 @@ class doners extends Component {
                 <Toast position="bottom-left" message={this.state.message} hideToast={() => this.hideToast()} show={this.state.show} variant={this.state.variant} />
                 {loading ? <Load /> : <div className="content-container">
                     <h4 style={{ textAlign: 'center' }}>Funded Donations </h4>
-                    {localStorage.getItem('role') === 'admin' ? <Button variant="primary" className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.setState({ showadd: true })}>Add</Button> : null}
-                    {localStorage.getItem('role') === 'donner' ? <Button variant="primary" className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.setState({ showaddmore: true })}>Add</Button> : null}
+                    {/* {localStorage.getItem('role') === 'admin' ? <Button variant="primary" className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.setState({ showadd: true })}>Add</Button> : null} */}
+                    {/* {localStorage.getItem('role') === 'donner' ? <Button variant="primary" className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.setState({ showaddmore: true })}>Add</Button> : null} */}
                     <Table striped bordered hover size="sm">
                         <thead>
                             <tr>

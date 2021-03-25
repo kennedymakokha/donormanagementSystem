@@ -27,7 +27,7 @@ class donnersapplicants extends Component {
         }
 
         this.setState({ data: k })
-        console.log(k)
+        
     }
     render() {
         return (
@@ -39,7 +39,7 @@ class donnersapplicants extends Component {
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone Number</th>
-                                <th>Action</th>
+                                {/* <th>Action</th> */}
 
                             </tr>
                         </thead>
@@ -51,7 +51,7 @@ class donnersapplicants extends Component {
                                     <td>{dat.phone}</td>
                                     {/* <td>{dat.donation_id.name}</td>
                                     <td><Badge variant={`${dat.status}`}>{dat.status === "warning" ? "Panding" : dat.status === "secondary" ? "processing" : dat.status === "success" ? "approved" : dat.status === "danger" ? "disapproved" : null}</Badge></td>*/}
-                                    <td> <Button variant= "primary" className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.approveit(dat)}>Donate</Button> </td> 
+                                    {/* <td> <Button variant= "primary" className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.approveit(dat)}>Donate</Button> </td>  */}
                                 </tr>
                             ))}
 

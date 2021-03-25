@@ -4,6 +4,7 @@ const Application = require('../models/applications')
 const Donations = require('../models/donations')
 const Donors = require('../models/doners')
 const User = require('../models/user')
+const { validateInput } = require('./../validations/applications');
 const { authMiddleware, authorized } = require('./helpers/authorized')
 var bcrypt = require('bcrypt');
 var transporter = require('./helpers/transporter');
@@ -44,7 +45,12 @@ router.post('/applicantionPost', [authMiddleware, authorized], async (req, res) 
         /* #swagger.security = [{
                 "apiKeyAuth": []
         }] */
+        const { errors, isValid } = validateInput(req.body);
+        if (!isValid) {
+            const errObj = errors;
+            return res.status(400).json({ success: false, message: `${Object.values(errObj)[0]}` });
 
+        }
         const appl = await Application.findOne({ applicants_id: req.body.applicants_id, donation_id: req.body.donation_id, category_id: req.body.category_id, deletedAt: null })
 
         if (appl) {
@@ -54,28 +60,28 @@ router.post('/applicantionPost', [authMiddleware, authorized], async (req, res) 
         const application = new Application(req.body);
         await application.save()
 
-        // const user = await User.findById(req.body.applicants_id)
-        // const donation = await Donations.findById(req.body.donation_id)
+        const user = await User.findById(req.body.applicants_id)
+        const donation = await Donations.findById(req.body.donation_id)
 
-        // const mailOptions = {
-        //     from: '"Octagon Dynamics" <bradcoupers@gmail.com>',
-        //     to: `katchibo2@gmail.com`,
-        //     subject: 'Octagon Dynamics  Donner Account',
-        //     template: 'application',
+        const mailOptions = {
+            from: '"Octagon Dynamics" <bradcoupers@gmail.com>',
+            to: `katchibo2@gmail.com`,
+            subject: 'Octagon Dynamics  Donner Account',
+            template: 'application',
 
-        //     context: {
-        //         email: `${user.email}`,
-        //         name: `${user.surname}`,
-        //         donations: `${donation.name}`
-        //     }
-        // };
-        // transporter.sendMail(mailOptions, function (error, info) {
-        //     if (error) {
-        //         console.log(error);
-        //     } else {
-        //         console.log('Email sent: ' + info.response);
-        //     }
-        // });
+            context: {
+                email: `${user.email}`,
+                name: `${user.surname}`,
+                donations: `${donation.name}`
+            }
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
 
         return res.status(200).json({ success: true, message: 'Application done successfully', application });
 

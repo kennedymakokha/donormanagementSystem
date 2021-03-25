@@ -88,15 +88,22 @@ class Layout extends Component {
     }
 
     submitApplication = async () => {
-        const data = {
-            donation_id: this.state.donation_id,
-            category_id: this.state.category_id,
-            applicants_id: localStorage.getItem('user_id')
+        try {
+            const data = {
+                donation_id: this.state.donation_id,
+                category_id: this.state.category_id,
+                applicants_id: localStorage.getItem('user_id')
+            }
+            await this.props.applicantpost(data)
+            this.setState({ showapply: false })
+            const j = toastify('application submitted', 'success')
+            this.setState({ show: 'notification-show', message: j.message, variant: j.variant })
+        } catch (error) {
+            const j = toastify(`${error.response.data.message}`, 'danger')
+            this.setState({
+                show: 'notification-show', message: j.message, variant: j.variant
+            })
         }
-        await this.props.applicantpost(data)
-        this.setState({ showapply: false })
-        const j = toastify('application submitted', 'success')
-        this.setState({ show: 'notification-show', message: j.message, variant: j.variant })
     }
 
     showToast = () => {
@@ -350,7 +357,7 @@ class Layout extends Component {
                             <Form.Group as={Col} controlId="formGridState">
                                 <Form.Label>Donation</Form.Label>
                                 <Form.Control as="select" name="donation_id" onChange={(e) => this.handleinputChange(e)}>
-                                    <option>Choose...</option>
+                                    {this.props.donations.length === 0 ? <option>Category does not have donations yet</option> : <option>Choose...</option>}
                                     {this.props.donations.map((cat, i) => (
                                         <option value={cat._id} key={i}>{cat.name}</option>
                                     ))}
