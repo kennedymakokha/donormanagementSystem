@@ -25,7 +25,7 @@ router.get('/applications-list', [authMiddleware, authorized], async (req, res) 
     }
 
 });
-router.post('/apllicantion-post', [authMiddleware, authorized], async (req, res) => {
+router.post('/applicantionPost', [authMiddleware, authorized], async (req, res) => {
 
     try {
 

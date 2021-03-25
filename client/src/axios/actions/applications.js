@@ -1,7 +1,7 @@
 import axios, { setAuthToken } from './axiosService'
 export const post = (data) => async dispatch => {
     try {
-        const response = await axios.post(`/apllicantion-post`, data);
+        const response = await axios.post(`/applicantionPost`, data);
 
         return response;
     } catch (error) {
