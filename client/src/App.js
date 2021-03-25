@@ -7,6 +7,8 @@ import Recipient from './components/recipients'
 import Category from './components/donationTypes'
 import Donations from './components/donations'
 import About from './components/about'
+import Applicants from './components/applicants'
+import DonApplicants from './components/donnersapplicants'
 import Error from './components/error'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -23,6 +25,8 @@ export default class App extends Component {
               <Route path="/donations-view" exact component={Donations} />
               <Route path="/donations-categories" exact component={Category} />
               <Route path="/about-us" exact component={About} />
+              <Route path="/applicants" exact component={Applicants} />
+              <Route path="/donor-applicants" exact component={DonApplicants} />
               <Route exact component={Error} />
             </Switch>
           </Router>

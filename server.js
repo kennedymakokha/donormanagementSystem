@@ -16,6 +16,7 @@ const catRoute = require('./routes/categories')
 const DonationRoute = require('./routes/donations')
 const DonarRoute = require('./routes/doner')
 const RecipientRoute = require('./routes/reciepient')
+const applicantsRoute = require('./routes/applicants')
 
 
 
@@ -54,6 +55,8 @@ app.use('/', catRoute);
 app.use('/', DonationRoute);
 app.use('/', DonarRoute);
 app.use('/', RecipientRoute);
+app.use('/', applicantsRoute);
+
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 const root = require('path').join(__dirname, 'client', 'build')

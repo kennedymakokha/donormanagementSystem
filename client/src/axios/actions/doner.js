@@ -24,6 +24,7 @@ export const fetch = () => async dispatch => {
 };
 export const fetchOne = (id) => async dispatch => {
     
+    
     try {
         setAuthToken(axios);
         const response = await axios.get(`/doner/${id}`);

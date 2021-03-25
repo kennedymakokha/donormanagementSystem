@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { authorised } from './../axios/actions/users'
 import { fetchdonations, post, fetchdonationpercategory, deleteDonation, EditDonation } from './../axios/actions/donations'
 import { fetchOne as fetchOneDonner } from './../axios/actions/doner'
+import { post as postapplication } from './../axios/actions/applications'
 import { fetchOne } from './../axios/actions/recipient'
 import { fetch, fetchOne as fetchOneCategory } from './../axios/actions/categories'
 import Toast from './toast'
@@ -21,10 +22,12 @@ class doners extends Component {
             categories: [],
             category_id: '',
             name: '',
+            showApply: false,
             loading: true,
             showDelete: false,
             item: {},
             showedit: false,
+            category: {}
         }
     }
 
@@ -75,6 +78,30 @@ class doners extends Component {
         const k = await this.props.fetchOneCategory(del.category_id._id)
         this.setState({ showedit: true, name: del.name, item: del })
     }
+    openApply = async (data) => {
+        this.setState({ showApply: true, item: data, category: data.category_id })
+
+    }
+    apply = async () => {
+        try {
+            const { category, item } = this.state
+            const data = {
+                category_id: category._id, donation_id: item._id, applicants_id: localStorage.getItem('user_id')
+            }
+            const result = await this.props.postapplication(data)
+            const j = toastify(`${result.data.message}`, 'success')
+            this.setState({
+                show: 'notification-show', message: j.message, variant: j.variant, showApply: false
+            })
+
+        } catch (error) {
+            const j = toastify(`${error.response.data.message}`, 'danger')
+            this.setState({
+                show: 'notification-show', message: j.message, variant: j.variant
+            })
+        }
+
+    }
 
     submitEdit = async () => {
 
@@ -113,11 +140,11 @@ class doners extends Component {
     }
 
     render() {
-        const { categories, showadd, loading, showDelete, item, showedit } = this.state
+        const { categories, showadd, showApply, loading, showDelete, item, showedit } = this.state
         return (
             <Layout >
 
-                <Toast position="top-left" message={this.state.message} hideToast={() => this.hideToast()} show={this.state.show} variant={this.state.variant} />
+                <Toast position="bottom-left" message={this.state.message} hideToast={() => this.hideToast()} show={this.state.show} variant={this.state.variant} />
                 {loading ? <Load /> : <div className="content-container">
                     <h4 style={{ textAlign: 'center' }}>Funded Donations </h4>
                     {localStorage.getItem('role') === 'admin' ? <Button variant="primary" className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.setState({ showadd: true })}>Add</Button> : null}
@@ -127,7 +154,7 @@ class doners extends Component {
                             <tr>
                                 <th>Name</th>
                                 {localStorage.getItem('role') === 'donner' ? null : <th>Category</th>}
-                                {localStorage.getItem('role') === 'admin' ? <th>Action</th> : null}
+                                {localStorage.getItem('role') === 'admin' || localStorage.getItem('role') === 'reciever' ? <th>Action</th> : null}
 
                             </tr>
                         </thead>
@@ -136,6 +163,7 @@ class doners extends Component {
                                 <tr key={i}>
                                     <td>{dat.name}</td>
                                     {localStorage.getItem('role') === 'donner' ? null : <td>{dat.category_id.name}</td>}
+                                    {localStorage.getItem('role') === 'reciever' ? <td style={{ display: 'flex', justifyContent: 'flex-end', }}><Button variant="primary" onClick={() => this.openApply(dat)}>Apply </Button></td> : null}
                                     {localStorage.getItem('role') === 'admin' ? <td style={{ display: 'flex', justifyContent: 'space-between', }}><Button variant="primary" onClick={() => this.openEdit(dat)}>Edit</Button>  <Button variant="danger" onClick={() => this.ShowDel(dat)}>Delete</Button></td> : null}
 
                                 </tr>
@@ -249,6 +277,29 @@ class doners extends Component {
                     </Modal.Footer>
                 </Modal>
 
+
+                <Modal
+                    show={showApply}
+                    onHide={() => this.setState({ showApply: false })}
+                    backdrop="static"
+                    keyboard={false}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Apply for {item.name}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <h5><u>{this.state.category.name}</u></h5>
+                        {item.name}  is a donation ......?
+
+        </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => this.setState({ showApply: false })}>
+                            Close
+          </Button>
+                        <Button variant="primary" onClick={() => this.apply()}>Apply Now</Button>
+                    </Modal.Footer>
+                </Modal>
+
             </Layout>
         )
     }
@@ -268,5 +319,5 @@ const mapStateToProps = (state) => {
 
 };
 
-export default connect(mapStateToProps, { fetch, authorised, EditDonation, fetchOneCategory, deleteDonation, fetchOneDonner, fetchdonations, fetchdonationpercategory, fetchOne, post })(withRouter(doners));
+export default connect(mapStateToProps, { fetch, authorised, postapplication, EditDonation, fetchOneCategory, deleteDonation, fetchOneDonner, fetchdonations, fetchdonationpercategory, fetchOne, post })(withRouter(doners));
 // export default doners

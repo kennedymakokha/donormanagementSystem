@@ -141,8 +141,8 @@ class Layout extends Component {
         try {
 
             const { name, email, mobile, donations, registrationNo, password_confirm, dob, area, contact, contact_phone, password } = this.state
-            
-            const data = { name, email, donations, registrationNo,password_confirm, mobile, dob, area, contact, contact_phone, password }
+
+            const data = { name, email, donations, registrationNo, password_confirm, mobile, dob, area, contact, contact_phone, password }
             const results = await this.props.postdoner(data)
             const j = toastify(`${results.data.message}`, 'success')
             this.setState({ showdoner: false, show: 'notification-show', message: j.message, variant: j.variant })
@@ -242,9 +242,12 @@ class Layout extends Component {
                             {this.props.user.role === "admin" ? <Nav.Link to="/donations-categories" href="/donations-categories">Donation Categories</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/donations-view" href="/donations-view">Donations</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/recipients" href="/recipients">Recipients</Nav.Link> : null}
+                            {this.props.user.role === "admin" ? <Nav.Link to="/applicants" href="/applicants">Applicants</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/doners-view" href="/doners-view">Donors</Nav.Link> : null}
                             {this.props.user.role === "reciever" ? <Nav.Link to="/donations-view" href="/donations-view">Available donations</Nav.Link> : null}
                             {this.props.user.role === "donner" ? <Nav.Link to="/donations-view" href="/donations-view">My donations</Nav.Link> : null}
+                            {this.props.user.role === "donner" ? <Nav.Link to="/donor-applicants" href="/donor-applicants">My Applicants</Nav.Link> : null}
+
                             {!localStorage.getItem('token') ? <Nav.Link to="/blogs" href="/blogs">Blog</Nav.Link> : null}
                             {!localStorage.getItem('token') ? <Nav.Link to="/contact-us" href="/contact-us">Contact</Nav.Link> : null}
                         </Nav>

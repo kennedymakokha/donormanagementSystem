@@ -33,6 +33,11 @@ var DonarSchema = new Schema({
         type: String,
         required: false
     },
+    applicants:
+        [{
+            type: Schema.Types.ObjectId,
+            ref: 'applications'
+        }],
 
     createdBy: {
         type: Schema.Types.ObjectId,

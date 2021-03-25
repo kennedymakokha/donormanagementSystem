@@ -128,7 +128,7 @@ router.get('/doner/:id', async (req, res, next) => {
     try {
         /* 	#swagger.tags = ['Doner']
  #swagger.description = 'Endpoint to get a Doner' */
-        const Don = await Doner.findOne({ _id: req.params.id }).populate('donations')
+        const Don = await Doner.findOne({ _id: req.params.id }).populate(['donations'])
         return res.status(200).json({ success: true, message: 'successfull', Don });
     } catch (error) {
         return res.status(400).json({ success: false, message: 'operation failed ', error });
