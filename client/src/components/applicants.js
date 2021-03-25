@@ -4,41 +4,33 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { Table, Modal, Col, Button, Badge } from 'react-bootstrap'
 import { fetch, approve } from './../axios/actions/applications'
-import { base } from './../axios/actions/baseUrl'
-import axios from 'axios'
+import Load from './loader'
 class applicants extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            category: {},
-            data: []
+            category: {}
 
         }
     }
 
     approveit = async (data) => {
         await this.props.approve(data._id)
-        const k = await axios.get(`${base}/applications-list`)
-
-        this.setState({ data: k.data.Applications })
+        await this.props.fetch()
     }
 
     componentDidMount = async () => {
-
-        const k = await axios.get(`${base}/applications-list`)
-
-        this.setState({ data: k.data.Applications })
+        await this.props.fetch()
 
 
-
+        console.log(this.props.applicants)
     }
 
     render() {
-        console.log(this.state.data)
         return (
             <Layout>
                 <div className="content-container">
-                    <Table striped bordered hover size="sm">
+                    {this.props.loading ? <Load /> : <Table striped bordered hover size="sm">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -50,18 +42,18 @@ class applicants extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {this.state.data.map((dat, i) => (
+                            {this.props.applicants.map((dat, i) => (
                                 <tr key={i}>
-                                    <td>{dat.applicants_id.surname}</td>
-                                    <td>{dat.category_id.name}</td>
-                                    <td>{dat.donation_id.name}</td>
+                                    <td>{dat.applicants_id === undefined ? null : dat.applicants_id.surname}</td>
+                                    <td>{dat.category_id === undefined ? null : dat.category_id.name}</td>
+                                    <td>{dat.donation_id === undefined ? null : dat.donation_id.name}</td>
                                     <td><Badge variant={`${dat.status}`}>{dat.status === "warning" ? "Panding" : dat.status === "secondary" ? "processing" : dat.status === "success" ? "approved" : dat.status === "danger" ? "disapproved" : null}</Badge></td>
                                     <td>{dat.status === "warning" ? <Button variant={dat.approved === "off" ? "primary" : "secondary"} className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.approveit(dat)}>{dat.approved === "off" ? "Approve" : "Pending"}</Button> : null}</td>
                                 </tr>
-                            ))} */}
+                            ))}
 
                         </tbody>
-                    </Table>
+                    </Table>}
                 </div>
             </Layout >
         )
