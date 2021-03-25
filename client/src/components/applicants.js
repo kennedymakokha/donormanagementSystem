@@ -41,7 +41,7 @@ class applicants extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.applicants === undefined ? null : this.props.applicants.map((dat, i) => (
+                            {this.props.applicants !== undefined ? null : this.props.applicants.map((dat, i) => (
                                 <tr key={i}>
                                     <td>{dat.applicants_id.surname}</td>
                                     <td>{dat.category_id.name}</td>
