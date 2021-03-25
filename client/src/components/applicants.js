@@ -22,7 +22,7 @@ class applicants extends Component {
         await this.props.fetch()
 
 
-        // console.log(this.props.applicants)
+        console.log(this.props.applicants)
     }
 
     render() {

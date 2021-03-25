@@ -30,7 +30,7 @@ export const fetchOne = (id) => async dispatch => {
 export const fetch = () => async dispatch => {
     try {
 
-        setAuthToken(axios);
+       
         const response = await axios.get(`/applications-list`);
         let payload = response.data.Applications
 
@@ -44,7 +44,7 @@ export const fetch = () => async dispatch => {
 };
 export const approve = (id) => async dispatch => {
     try {
-        setAuthToken(axios);
+      
         const response = await axios.put(`/applicant/${id}/approve`);
         return response;
     } catch (error) {
