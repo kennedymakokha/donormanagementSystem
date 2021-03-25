@@ -9,13 +9,15 @@ var bcrypt = require('bcrypt');
 var transporter = require('./helpers/transporter');
 const nodemailer = require("nodemailer");
 const hbs = require('nodemailer-express-handlebars');
-router.get('/applications-list', [authMiddleware, authorized], async (req, res) => {
+router.get('/applications-list', async (req, res) => {
 
     try {
         /* 	#swagger.tags = ['Applicant']
   #swagger.description = 'Endpoint to fetch  a apllications' */
-        const Applications = await Application.find({ deletedAt: null }).populate(['category_id', 'donation_id', 'applicants_id']);
 
+
+        const Applications = await Application.find({ deletedAt: null }).populate(['category_id', 'donation_id', 'applicants_id']);
+        console.log(Applications)
         return res.status(200).json({ success: true, message: 'retrieved successfully ', Applications });
 
     } catch (error) {

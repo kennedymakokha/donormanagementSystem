@@ -4,28 +4,37 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { Table, Modal, Col, Button, Badge } from 'react-bootstrap'
 import { fetch, approve } from './../axios/actions/applications'
+import { base } from './../axios/actions/baseUrl'
+import axios from 'axios'
 class applicants extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            category: {}
+            category: {},
+            data: []
 
         }
     }
 
     approveit = async (data) => {
         await this.props.approve(data._id)
-        await this.props.fetch()
+        const k = await axios.get(`${base}/applications-list`)
+
+        this.setState({ data: k.data.Applications })
     }
 
     componentDidMount = async () => {
-        await this.props.fetch()
+
+        const k = await axios.get(`${base}/applications-list`)
+
+        this.setState({ data: k.data.Applications })
 
 
-        console.log(this.props.applicants)
+        
     }
 
     render() {
+        console.log( this.state.data)
         return (
             <Layout>
                 <div className="content-container">
@@ -41,7 +50,7 @@ class applicants extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.applicants !== undefined ? null : this.props.applicants.map((dat, i) => (
+                            {this.state.data === undefined ? null : this.state.data.map((dat, i) => (
                                 <tr key={i}>
                                     <td>{dat.applicants_id.surname}</td>
                                     <td>{dat.category_id.name}</td>
