@@ -13,9 +13,10 @@ export const fetchOne = (id) => async dispatch => {
 
     try {
         setAuthToken(axios);
-        const response = await axios.get(`/applicant/${id}`);
-        let payload = response.data.applicant
-        alert(JSON.stringify(payload))
+        const response = await axios.get(`/user/${id}`);
+
+        let payload = response.data.usr
+
         await dispatch({ type: 'FETCH_APPLICANT', payload })
         return payload;
 
@@ -35,9 +36,28 @@ export const fetch = () => async dispatch => {
 
 
         let payload = response.data.Applications
-       
+
 
         await dispatch({ type: 'FETCH_APPLICANTS', payload })
+        return payload;
+
+    } catch (error) {
+        throw error;
+    }
+
+};
+
+export const fetchapplicant = (id) => async dispatch => {
+    try {
+
+
+        const response = await axios.get(`/user/${id}`);
+
+
+        let payload = response.data.usr
+
+
+        await dispatch({ type: 'FETCH_APPLICANT', payload })
         return payload;
 
     } catch (error) {
