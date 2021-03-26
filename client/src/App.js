@@ -8,6 +8,7 @@ import Category from './components/donationTypes'
 import Donations from './components/donations'
 import About from './components/about'
 import Applicants from './components/applicants'
+import MyApplicants from './components/myapplications'
 import DonApplicants from './components/donnersapplicants'
 import Error from './components/error'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,6 +28,7 @@ export default class App extends Component {
               <Route path="/about-us" exact component={About} />
               <Route path="/applicants-view" exact component={Applicants} />
               <Route path="/donor-applicants" exact component={DonApplicants} />
+              <Route path="/my-applications" exact component={MyApplicants} />
               <Route exact component={Error} />
             </Switch>
           </Router>

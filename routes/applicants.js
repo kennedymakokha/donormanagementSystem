@@ -91,7 +91,7 @@ router.post('/applicantionPost', [authMiddleware, authorized], async (req, res) 
     }
 
 });
-router.get('/applicant/:id', async (req, res, next) => {
+router.get('/applicant/:id', [authMiddleware, authorized], async (req, res, next) => {
 
     try {
         /* 	#swagger.tags = ['Doner']
@@ -103,6 +103,19 @@ router.get('/applicant/:id', async (req, res, next) => {
     }
 
 });
+router.get('/aplications-route', [authMiddleware, authorized], async (req, res, next) => {
+
+    try {
+        /* 	#swagger.tags = ['Doner']
+ #swagger.description = 'Endpoint to get a Doner' */
+        const applicants = await Application.find({ applicants_id: req.user._id }).populate(['donation_id','category_id',])
+        return res.status(200).json({ success: true, message: 'successfull', applicants });
+    } catch (error) {
+        return res.status(400).json({ success: false, message: 'operation failed ', error });
+    }
+
+});
+
 
 router.put('/applicant/:id/approve', [authMiddleware, authorized], async (req, res, next) => {
 

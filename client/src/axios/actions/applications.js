@@ -47,17 +47,17 @@ export const fetch = () => async dispatch => {
 
 };
 
-export const fetchapplicant = (id) => async dispatch => {
+export const fetchapplicants = () => async dispatch => {
     try {
 
 
-        const response = await axios.get(`/user/${id}`);
+        const response = await axios.get(`/aplications-route`);
 
 
-        let payload = response.data.usr
+        let payload = response.data.applicants
 
 
-        await dispatch({ type: 'FETCH_APPLICANT', payload })
+        await dispatch({ type: 'FETCH_APPLICANTS', payload })
         return payload;
 
     } catch (error) {

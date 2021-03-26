@@ -14,7 +14,7 @@ import { loginUser, authorised, logout } from './../axios/actions/users'
 import { fetch } from './../axios/actions/categories'
 import { fetchdonations, fetchdonationpercategory } from './../axios/actions/donations'
 import { post as postdoner } from './../axios/actions/doner'
-import { post as applicantpost } from './../axios/actions/applications'
+import { post as applicantpost, fetchapplicants } from './../axios/actions/applications'
 
 import { post as postrecipient } from './../axios/actions/recipient'
 import { withRouter } from 'react-router-dom';
@@ -95,6 +95,7 @@ class Layout extends Component {
                 applicants_id: localStorage.getItem('user_id')
             }
             await this.props.applicantpost(data)
+            await this.props.fetchapplicants()
             this.setState({ showapply: false })
             const j = toastify('application submitted', 'success')
             this.setState({ show: 'notification-show', message: j.message, variant: j.variant })
@@ -277,7 +278,7 @@ class Layout extends Component {
                             {this.props.user.role === "admin" ? <Nav.Link to="/recipients" href="/recipients">Recipients</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/applicants-view" href="/applicants-view">Applicants</Nav.Link> : null}
                             {this.props.user.role === "admin" ? <Nav.Link to="/doners-view" href="/doners-view">Donors</Nav.Link> : null}
-                            {this.props.user.role === "reciever" ? <Nav.Link to="/donations-view" href="/donations-view">Available donations</Nav.Link> : null}
+                            {this.props.user.role === "reciever" ? <Nav.Link to="/my-applications" href="/my-applications">My Applications</Nav.Link> : null}
                             {this.props.user.role === "donner" ? <Nav.Link to="/donations-view" href="/donations-view">My donations</Nav.Link> : null}
                             {this.props.user.role === "donner" ? <Nav.Link to="/donor-applicants" href="/donor-applicants">My Applicants</Nav.Link> : null}
 
@@ -631,4 +632,4 @@ const mapStateToProps = (state) => {
 
 };
 
-export default connect(mapStateToProps, { loginUser, applicantpost, authorised, fetch, fetchdonations, postdoner, postrecipient, fetchdonationpercategory, logout })(withRouter(Layout));
+export default connect(mapStateToProps, { loginUser, applicantpost, authorised, fetch, fetchdonations, postdoner, postrecipient, fetchapplicants, fetchdonationpercategory, logout })(withRouter(Layout));
