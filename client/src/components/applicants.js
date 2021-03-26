@@ -47,7 +47,7 @@ class applicants extends Component {
                                     <td>{dat.applicants_id === undefined ? null : dat.applicants_id.surname}</td>
                                     <td>{dat.category_id === undefined ? null : dat.category_id.name}</td>
                                     <td>{dat.donation_id === undefined ? null : dat.donation_id.name}</td>
-                                    <td><Badge variant={`${dat.status}`}>{dat.status === "warning" ? "Panding" : dat.status === "secondary" ? "processing" : dat.status === "success" ? "approved" : dat.status === "danger" ? "disapproved" : null}</Badge></td>
+                                    <td><Badge variant={`${dat.status}`}>{dat.status === "warning" ? "Pending" : dat.status === "secondary" ? "processing" : dat.status === "success" ? "approved" : dat.status === "danger" ? "disapproved" : null}</Badge></td>
                                     <td>{dat.status === "warning" ? <Button variant={dat.approved === "off" ? "primary" : "secondary"} className="float-right" style={{ marginBottom: '10px' }} onClick={() => this.approveit(dat)}>{dat.approved === "off" ? "Approve" : "Pending"}</Button> : null}</td>
                                 </tr>
                             ))}

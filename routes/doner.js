@@ -56,7 +56,7 @@ router.post('/doner', async (req, res) => {
         if (Usedtel) {
             return res.status(400).json({ success: false, message: `${req.body.mobile} already used kindly use another No` });
         }
-        
+
         if (req.body.password !== req.body.password_confirm) {
             return res.status(400).json({ success: false, message: `Password doesnt match the confirm password` });
         }
@@ -94,7 +94,7 @@ router.post('/doner', async (req, res) => {
         const userRecord = new UserK(newuser)
         await userRecord.save()
         const doni = []
-        
+
         const mailOptions = {
             from: '"Octagon Dynamics" <bradcoupers@gmail.com>',
             to: `${userRecord.email}`,
@@ -128,7 +128,7 @@ router.get('/doner/:id', async (req, res, next) => {
     try {
         /* 	#swagger.tags = ['Doner']
  #swagger.description = 'Endpoint to get a Doner' */
-        const Don = await Doner.findOne({ _id: req.params.id }).populate(['donations'])
+        const Don = await Doner.findOne({ _id: req.params.id }).populate(['donations', 'applicants'])
         return res.status(200).json({ success: true, message: 'successfull', Don });
     } catch (error) {
         return res.status(400).json({ success: false, message: 'operation failed ', error });
@@ -168,7 +168,7 @@ router.put('/doner/:id/edit', [authMiddleware, authorized], async (req, res, nex
         body.updatedBy = req.user._id
         // body.updatedBy = req.user._id
         body.updatedAt = Date.now()
-      
+
         const cat = await Doner.findOneAndUpdate({ _id: req.params.id }, body, { new: true, useFindAndModify: false })
         return res.status(200).json({ success: true, message: 'Donor edited successfull', cat });
     } catch (error) {
